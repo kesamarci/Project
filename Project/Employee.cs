@@ -9,23 +9,7 @@ namespace Project
 {
     public class Employee
     {
-        public Employee(string employeeId, string name, int birthYear, int startYear, int completedProjects, bool active, bool retired, string email, string phone, string job, string level, int salary, decimal commission, List<Department> departments)
-        {
-            EmployeeId = employeeId;
-            Name = name;
-            BirthYear = birthYear;
-            StartYear = startYear;
-            CompletedProjects = completedProjects;
-            Active = active;
-            Retired = retired;
-            Email = email;
-            Phone = phone;
-            Job = job;
-            Level = level;
-            Salary = salary;
-            Commission = commission;
-            Departments = departments;
-        }
+       
 
         public string EmployeeId { get; set; }
         public string Name { get; set; }
