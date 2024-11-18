@@ -9,63 +9,44 @@ namespace Project
         
         static async Task Main(string[] args)
         {
-            //   var subMenu = new ConsoleMenu(args, level: 1)
-            //.Add("Sub_One", () => SomeAction("Sub_One"))
-            //.Add("Sub_Two", () => SomeAction("Sub_Two"))
-            //.Add("Sub_Three", () => SomeAction("Sub_Three"))
-            //.Add("Sub_Four", () => SomeAction("Sub_Four"))
-            //.Add("Sub_Close", ConsoleMenu.Close)
-            //.Configure(config =>
-            //{
-            //    config.Selector = "--> ";
-            //    config.EnableFilter = true;
-            //    config.Title = "Submenu";
-            //    config.EnableBreadcrumb = true;
-            //    config.WriteBreadcrumbAction = titles => Console.WriteLine(string.Join(" / ", titles));
-            //});
-
-            //   var menu = new ConsoleMenu(args, level: 0)
-            //     .Add("One", () => SomeAction("One"))
-            //     .Add("Two", () => SomeAction("Two"))
-            //     .Add("Three", () => SomeAction("Three"))
-            //     .Add("Sub", subMenu.Show)
-            //     .Add("Change me", (thisMenu) => thisMenu.CurrentItem.Name = "I am changed!")
-            //     .Add("Close", ConsoleMenu.Close)
-            //     .Add("Action then Close", (thisMenu) => { SomeAction("Close"); thisMenu.CloseMenu(); })
-            //     .Add("Exit", () => Environment.Exit(0))
-            //     .Configure(config =>
-            //     {
-            //         config.Selector = "--> ";
-            //         config.EnableFilter = true;
-            //         config.Title = "Main menu";
-            //         config.EnableWriteTitle = true;
-            //         config.EnableBreadcrumb = true;
-            //     });
-
-            //   menu.Show();
+            var subMenu = new ConsoleMenu(args, level: 1)
+         .Add("Sub_One", () => SomeAction("Sub_One"))
+         .Add("Sub_Two", () => SomeAction("Sub_Two"))
+         .Add("Sub_Three", () => SomeAction("Sub_Three"))
+         .Add("Sub_Four", () => SomeAction("Sub_Four"))
+         .Add("Sub_Close", ConsoleMenu.Close)
+         .Configure(config =>
+         {
+             config.Selector = "--> ";
+             config.EnableFilter = true;
+             config.Title = "Submenu";
+             config.EnableBreadcrumb = true;
+             config.WriteBreadcrumbAction = titles => Console.WriteLine(string.Join(" / ", titles));
+         });
 
 
+            var menu = new ConsoleMenu(args, level: 0)
+              .Add("Adat import (XML)", () => ImportXmlData())
+              .Add("Adat import (WEB JSON)", () => ImportJsonData())
+              .Add("Adat export", () => SomeAction("Three"))
+              .Add("CRUD", () => SomeAction("Four"))
+              .Add("Grafikon", () => SomeAction("Five"))
+              .Add("Lekérdezések", () => SomeAction("Six"))
+              .Add("Exit", () => Environment.Exit(0))
+              .Configure(config =>
+              {
+                  config.Selector = "--> ";
+                  config.EnableFilter = false;
+                  config.Title = "Main menu";
+                  config.EnableWriteTitle = true;
+                  config.EnableBreadcrumb = true;
+              });
 
             
-
-            // XML feldolgozása
-            string xmlFilePath = "employees-departments.xml";
-            List<Employee> employees = ProcessEmployeesFromXml(xmlFilePath);
-            Console.WriteLine("XML adatok feldolgozva:");
-            foreach (var emp in employees)
+            do
             {
-                Console.WriteLine($"Employee ID: {emp.EmployeeId}, Name: {emp.Name}, Salary: {emp.Salary} HUF");
-            }
-
-            // JSON feldolgozása
-            string jsonFilePath = "managers.json";
-            List<Manager> managers = await GetManagersFromFileAsync(jsonFilePath);
-            Console.WriteLine("\nJSON adatok feldolgozva:");
-            foreach (var manager in managers)
-            {
-                Console.WriteLine($"ID: {manager.ManagerId}, Name: {manager.Name}, Start Year: {manager.StartOfEmployment.ToShortDateString()}, Has MBA: {manager.HasMBA}");
-            }
-
+                menu.Show(); 
+            } while (true);
 
         }
         static List<Employee> ProcessEmployeesFromXml(string filePath)
@@ -73,7 +54,7 @@ namespace Project
             XDocument doc = XDocument.Load(filePath);
             var employees = doc.Descendants("Employee").Select(emp => new Employee
             {
-                EmployeeId = emp.Attribute("mployeeid")?.Value,
+                EmployeeId = emp.Attribute("employeeid")?.Value,
                 Name = emp.Element("Name")?.Value,
                 BirthYear = int.Parse(emp.Element("BirthYear")?.Value ?? "0"),
                 StartYear = int.Parse(emp.Element("StartYear")?.Value ?? "0"),
@@ -98,7 +79,30 @@ namespace Project
 
             return employees;
         }
-
+        private static void ImportXmlData()
+        {
+            string xmlFilePath = "employees-departments.xml";
+            List<Employee> employees = ProcessEmployeesFromXml(xmlFilePath);
+            Console.WriteLine("XML adatok feldolgozva:");
+            foreach (var emp in employees)
+            {
+                Console.WriteLine($"Employee ID: {emp.EmployeeId}, Name: {emp.Name}, Salary: {emp.Salary} HUF");
+            }
+            Console.WriteLine("\nNyomj meg egy gombot a folytatáshoz...");
+            Console.ReadKey();
+        }
+        private static async Task ImportJsonData()
+        {
+            string jsonFilePath = "managers.json";
+            List<Manager> managers = await GetManagersFromFileAsync(jsonFilePath);
+            Console.WriteLine("\nJSON adatok feldolgozva:");
+            foreach (var manager in managers)
+            {
+                Console.WriteLine($"ID: {manager.ManagerId}, Name: {manager.Name}, Start Year: {manager.StartOfEmployment.ToShortDateString()}, Has MBA: {manager.HasMBA}");
+            }
+            Console.WriteLine("\nNyomj meg egy gombot a folytatáshoz...");
+            Console.ReadKey();
+        }
         static async Task<List<Manager>> GetManagersFromFileAsync(string filePath)
         {
             using FileStream openStream = File.OpenRead(filePath);
@@ -107,7 +111,7 @@ namespace Project
 
         static decimal ConvertToHUF(decimal eurAmount)
         {
-            const decimal exchangeRate = 400; 
+            decimal exchangeRate = 400; 
             return eurAmount * exchangeRate;
         }
 
