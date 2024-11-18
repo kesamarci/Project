@@ -1,20 +1,13 @@
 ﻿using ConsoleTools;
+using System.Text.Json;
 using System.Xml.Linq;
 
 namespace Project
 {
-    internal class Program
+    public class Program
     {
-        public class Employee
-        {
-           
-        }
-
-        public class Department
-        {
-            
-        }
-        static void Main(string[] args)
+        
+        static async Task Main(string[] args)
         {
             //   var subMenu = new ConsoleMenu(args, level: 1)
             //.Add("Sub_One", () => SomeAction("Sub_One"))
@@ -53,19 +46,34 @@ namespace Project
 
 
 
-            //var xml = XDocument.Load("employees-departments.xml");
-            //foreach (var item in
-            //    xml.Element("Employees")!.Elements("Employee"))
-            //{
-            //    Console.WriteLine(item.Element("name")?.Value);
-            //}
+            
 
-            string filePath = "employees-departments.xml";
+            // XML feldolgozása
+            string xmlFilePath = "employees-departments.xml";
+            List<Employee> employees = ProcessEmployeesFromXml(xmlFilePath);
+            Console.WriteLine("XML adatok feldolgozva:");
+            foreach (var emp in employees)
+            {
+                Console.WriteLine($"Employee ID: {emp.EmployeeId}, Name: {emp.Name}, Salary: {emp.Salary} HUF");
+            }
+
+            // JSON feldolgozása
+            string jsonFilePath = "managers.json";
+            List<Manager> managers = await GetManagersFromFileAsync(jsonFilePath);
+            Console.WriteLine("\nJSON adatok feldolgozva:");
+            foreach (var manager in managers)
+            {
+                Console.WriteLine($"ID: {manager.ManagerId}, Name: {manager.Name}, Start Year: {manager.StartOfEmployment.ToShortDateString()}, Has MBA: {manager.HasMBA}");
+            }
+
+
+        }
+        static List<Employee> ProcessEmployeesFromXml(string filePath)
+        {
             XDocument doc = XDocument.Load(filePath);
-
             var employees = doc.Descendants("Employee").Select(emp => new Employee
             {
-                EmployeeId = emp.Attribute("employeeid")?.Value,
+                EmployeeId = emp.Attribute("mployeeid")?.Value,
                 Name = emp.Element("Name")?.Value,
                 BirthYear = int.Parse(emp.Element("BirthYear")?.Value ?? "0"),
                 StartYear = int.Parse(emp.Element("StartYear")?.Value ?? "0"),
@@ -88,19 +96,22 @@ namespace Project
                 }).ToList()
             }).ToList();
 
-            
-            foreach (var emp in employees)
-            {
-                Console.WriteLine($"Employee ID: {emp.EmployeeId}, Name: {emp.Name}, Commission: {emp.Commission} HUF");
-            }
+            return employees;
+        }
 
+        static async Task<List<Manager>> GetManagersFromFileAsync(string filePath)
+        {
+            using FileStream openStream = File.OpenRead(filePath);
+            return await JsonSerializer.DeserializeAsync<List<Manager>>(openStream);
         }
 
         static decimal ConvertToHUF(decimal eurAmount)
         {
-            decimal exchangeRate = 400; 
+            const decimal exchangeRate = 400; 
             return eurAmount * exchangeRate;
         }
+
+
         private static void SomeAction(string v)
         {
             throw new NotImplementedException();
