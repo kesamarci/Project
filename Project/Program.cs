@@ -7,26 +7,12 @@ namespace Project
     public class Program
     {
         
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
-            var subMenu = new ConsoleMenu(args, level: 1)
-         .Add("Sub_One", () => SomeAction("Sub_One"))
-         .Add("Sub_Two", () => SomeAction("Sub_Two"))
-         .Add("Sub_Three", () => SomeAction("Sub_Three"))
-         .Add("Sub_Four", () => SomeAction("Sub_Four"))
-         .Add("Sub_Close", ConsoleMenu.Close)
-         .Configure(config =>
-         {
-             config.Selector = "--> ";
-             config.EnableFilter = true;
-             config.Title = "Submenu";
-             config.EnableBreadcrumb = true;
-             config.WriteBreadcrumbAction = titles => Console.WriteLine(string.Join(" / ", titles));
-         });
-
 
             var menu = new ConsoleMenu(args, level: 0)
               .Add("Adat import (XML)", () => ImportXmlData())
+              
               .Add("Adat import (WEB JSON)", () => ImportJsonData())
               .Add("Adat export", () => SomeAction("Three"))
               .Add("CRUD", () => SomeAction("Four"))
@@ -43,10 +29,10 @@ namespace Project
               });
 
             
-            do
-            {
-                menu.Show(); 
-            } while (true);
+           
+                menu.Show();
+                
+            
 
         }
         static List<Employee> ProcessEmployeesFromXml(string filePath)
@@ -81,8 +67,10 @@ namespace Project
         }
         private static void ImportXmlData()
         {
+
             string xmlFilePath = "employees-departments.xml";
             List<Employee> employees = ProcessEmployeesFromXml(xmlFilePath);
+            
             Console.WriteLine("XML adatok feldolgozva:");
             foreach (var emp in employees)
             {
@@ -91,22 +79,23 @@ namespace Project
             Console.WriteLine("\nNyomj meg egy gombot a folytatáshoz...");
             Console.ReadKey();
         }
-        private static async Task ImportJsonData()
+        private static void ImportJsonData()
         {
-            string jsonFilePath = "managers.json";
-            List<Manager> managers = await GetManagersFromFileAsync(jsonFilePath);
+           
+            string jsonFilePath = "managers.json"; 
+            List<Manager> managers = GetManagersFromFile(jsonFilePath);
             Console.WriteLine("\nJSON adatok feldolgozva:");
             foreach (var manager in managers)
             {
                 Console.WriteLine($"ID: {manager.ManagerId}, Name: {manager.Name}, Start Year: {manager.StartOfEmployment.ToShortDateString()}, Has MBA: {manager.HasMBA}");
             }
             Console.WriteLine("\nNyomj meg egy gombot a folytatáshoz...");
-            Console.ReadKey();
+            Console.ReadKey(); 
         }
-        static async Task<List<Manager>> GetManagersFromFileAsync(string filePath)
+        private static List<Manager> GetManagersFromFile(string filePath)
         {
-            using FileStream openStream = File.OpenRead(filePath);
-            return await JsonSerializer.DeserializeAsync<List<Manager>>(openStream);
+            string jsonString = File.ReadAllText(filePath);
+            return JsonSerializer.Deserialize<List<Manager>>(jsonString);
         }
 
         static decimal ConvertToHUF(decimal eurAmount)
