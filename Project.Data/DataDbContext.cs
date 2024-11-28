@@ -29,7 +29,15 @@ namespace Project.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Employee>()
+        .HasOne(e => e.Departments)
+        .WithMany(d => d.Employees)
+        .HasForeignKey(e => e.DepartmentId);
+
+            modelBuilder.Entity<Manager>()
+                .HasOne(m => m.Department)
+                .WithMany(d => d.Managers)
+                .HasForeignKey(m => m.DepartmentId);
         }
     }
 }
