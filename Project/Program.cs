@@ -1,4 +1,5 @@
 ﻿using ConsoleTools;
+using Project.Models;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -12,21 +13,13 @@ namespace Project
 
             var menu = new ConsoleMenu(args, level: 0)
               .Add("Adat import (XML)", () => ImportXmlData())
-              
               .Add("Adat import (WEB JSON)", () => ImportJsonData())
               .Add("Adat export", () => SomeAction("Three"))
               .Add("CRUD", () => SomeAction("Four"))
               .Add("Grafikon", () => SomeAction("Five"))
               .Add("Lekérdezések", () => SomeAction("Six"))
-              .Add("Exit", () => Environment.Exit(0))
-              .Configure(config =>
-              {
-                  config.Selector = "--> ";
-                  config.EnableFilter = false;
-                  config.Title = "Main menu";
-                  config.EnableWriteTitle = true;
-                  config.EnableBreadcrumb = true;
-              });
+              .Add("Exit", () => Environment.Exit(0));
+              
 
             
            

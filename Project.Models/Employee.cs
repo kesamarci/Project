@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Project.Program;
 
-namespace Project
+namespace Project.Models
 {
     public class Employee
     {
-       
 
+        [Key]
         public string EmployeeId { get; set; }
         public string Name { get; set; }
         public int BirthYear { get; set; }

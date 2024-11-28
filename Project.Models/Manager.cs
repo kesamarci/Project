@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project
+namespace Project.Models
 {
     public class Manager
     {
-       
 
+        [Key]   
         public string Name { get; set; }
         public string ManagerId { get; set; }
         public int BirthYear { get; set; }
