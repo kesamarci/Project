@@ -10,8 +10,9 @@ namespace Project.Models
     public class Manager
     {
 
-        [Key]   
+        
         public string Name { get; set; }
+        [Key]
         public string ManagerId { get; set; }
         public int BirthYear { get; set; }
         public DateTime StartOfEmployment { get; set; }

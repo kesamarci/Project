@@ -15,6 +15,12 @@ namespace Project.Data
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Department> Departments { get; set; }
 
+        public DataDbContext(DbContextOptions<DataDbContext> options)
+             : base(options)
+        {
+            Database.EnsureCreated();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connStr = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=Datas;Integrated Security=True;MultipleActiveResultSets=true";
