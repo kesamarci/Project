@@ -11,7 +11,7 @@ namespace Project.Models
     {
 
         [Key]
-        public string EmployeeId { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public int BirthYear { get; set; }
         public int StartYear { get; set; }
@@ -24,6 +24,6 @@ namespace Project.Models
         public string Level { get; set; }
         public int Salary { get; set; }
         public decimal Commission { get; set; }
-        public List<Department> Departments { get; set; }
+        public virtual ICollection<Department> Departments { get; set; }
     }
 }

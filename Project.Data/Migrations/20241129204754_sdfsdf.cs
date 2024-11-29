@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Project.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class sajt : Migration
+    public partial class sdfsdf : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace Project.Data.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BirthYear = table.Column<int>(type: "int", nullable: false),
                     StartYear = table.Column<int>(type: "int", nullable: false),
@@ -31,47 +31,48 @@ namespace Project.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
+                    table.PrimaryKey("PK_Employees", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Managers",
                 columns: table => new
                 {
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ManagerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ManagerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BirthYear = table.Column<int>(type: "int", nullable: false),
                     StartOfEmployment = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HasMBA = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Managers", x => x.Name);
+                    table.PrimaryKey("PK_Managers", x => x.ManagerId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Departments",
                 columns: table => new
                 {
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DepartmentCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HeadOfDepartment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    DepartmentCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EmployeeID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HeadOfDepartment = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Departments", x => x.Name);
+                    table.PrimaryKey("PK_Departments", x => x.DepartmentCode);
                     table.ForeignKey(
-                        name: "FK_Departments_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_Departments_Employees_EmployeeID",
+                        column: x => x.EmployeeID,
                         principalTable: "Employees",
-                        principalColumn: "EmployeeId");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Departments_EmployeeId",
+                name: "IX_Departments_EmployeeID",
                 table: "Departments",
-                column: "EmployeeId");
+                column: "EmployeeID");
         }
 
         /// <inheritdoc />

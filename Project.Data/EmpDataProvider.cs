@@ -33,7 +33,7 @@ namespace Project.Data
         public Employee GetEmployeeById(string employeeId)
         {
             return _context.Employees.Include(e => e.Departments)
-                                     .FirstOrDefault(e => e.EmployeeId == employeeId)!;
+                                     .FirstOrDefault(e => e.Id == employeeId)!;
         }
 
         public void AddEmployee(Employee employee)

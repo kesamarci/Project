@@ -27,7 +27,8 @@ namespace Project.Data.Migrations
                     b.Property<string>("DepartmentCode")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("EmployeeId")
+                    b.Property<string>("EmployeeID")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("HeadOfDepartment")
@@ -40,14 +41,14 @@ namespace Project.Data.Migrations
 
                     b.HasKey("DepartmentCode");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeID");
 
                     b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("Project.Models.Employee", b =>
                 {
-                    b.Property<string>("EmployeeId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Active")
@@ -91,7 +92,7 @@ namespace Project.Data.Migrations
                     b.Property<int>("StartYear")
                         .HasColumnType("int");
 
-                    b.HasKey("EmployeeId");
+                    b.HasKey("Id");
 
                     b.ToTable("Employees");
                 });
@@ -121,9 +122,13 @@ namespace Project.Data.Migrations
 
             modelBuilder.Entity("Project.Models.Department", b =>
                 {
-                    b.HasOne("Project.Models.Employee", null)
+                    b.HasOne("Project.Models.Employee", "Employees")
                         .WithMany("Departments")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("Project.Models.Employee", b =>

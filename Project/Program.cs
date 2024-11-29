@@ -1,4 +1,5 @@
 ﻿using ConsoleTools;
+using Project.Data;
 using Project.Models;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -24,8 +25,8 @@ namespace Project
             
            
                 menu.Show();
-                
-            
+
+           
 
         }
         static List<Employee> ProcessEmployeesFromXml(string filePath)
@@ -33,7 +34,7 @@ namespace Project
             XDocument doc = XDocument.Load(filePath);
             var employees = doc.Descendants("Employee").Select(emp => new Employee
             {
-                EmployeeId = emp.Attribute("employeeid")?.Value,
+                Id = emp.Attribute("employeeid")?.Value,
                 Name = emp.Element("Name")?.Value,
                 BirthYear = int.Parse(emp.Element("BirthYear")?.Value ?? "0"),
                 StartYear = int.Parse(emp.Element("StartYear")?.Value ?? "0"),
@@ -48,11 +49,11 @@ namespace Project
                 Commission = emp.Element("Commission")?.Attribute("currency")?.Value == "eur" ?
                     ConvertToHUF(decimal.Parse(emp.Element("Commission")?.Value ?? "0")) :
                     decimal.Parse(emp.Element("Commission")?.Value ?? "0"),
-                Departments = emp.Element("Departments")?.Elements("Department").Select(dept => new Department
+                Departments = emp.Element("Departments")!.Elements("Department").Select(dept => new Department
                 {
-                    Name = dept.Element("Name")?.Value,
-                    DepartmentCode = dept.Element("DepartmentCode")?.Value,
-                    HeadOfDepartment = dept.Element("HeadOfDepartment")?.Value
+                    Name = dept.Element("Name")!.Value,
+                    DepartmentCode = dept.Element("DepartmentCode")!.Value,
+                    HeadOfDepartment = dept.Element("HeadOfDepartment")!.Value
                 }).ToList()
             }).ToList();
 
@@ -67,7 +68,7 @@ namespace Project
             Console.WriteLine("XML adatok feldolgozva:");
             foreach (var emp in employees)
             {
-                Console.WriteLine($"Employee ID: {emp.EmployeeId}, Name: {emp.Name}, Salary: {emp.Salary} HUF");
+                Console.WriteLine($"Employee ID: {emp.Id}, Name: {emp.Name}, Salary: {emp.Salary} HUF");
             }
             Console.WriteLine("\nNyomj meg egy gombot a folytatáshoz...");
             Console.ReadKey();

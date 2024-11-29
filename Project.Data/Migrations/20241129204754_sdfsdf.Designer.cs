@@ -12,8 +12,8 @@ using Project.Data;
 namespace Project.Data.Migrations
 {
     [DbContext(typeof(DataDbContext))]
-    [Migration("20241128143447_sajt")]
-    partial class sajt
+    [Migration("20241129204754_sdfsdf")]
+    partial class sdfsdf
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,30 +27,31 @@ namespace Project.Data.Migrations
 
             modelBuilder.Entity("Project.Models.Department", b =>
                 {
-                    b.Property<string>("Name")
+                    b.Property<string>("DepartmentCode")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("DepartmentCode")
+                    b.Property<string>("EmployeeID")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmployeeId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("HeadOfDepartment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasKey("DepartmentCode");
+
+                    b.HasIndex("EmployeeID");
 
                     b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("Project.Models.Employee", b =>
                 {
-                    b.Property<string>("EmployeeId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Active")
@@ -94,14 +95,14 @@ namespace Project.Data.Migrations
                     b.Property<int>("StartYear")
                         .HasColumnType("int");
 
-                    b.HasKey("EmployeeId");
+                    b.HasKey("Id");
 
                     b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("Project.Models.Manager", b =>
                 {
-                    b.Property<string>("Name")
+                    b.Property<string>("ManagerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("BirthYear")
@@ -110,22 +111,27 @@ namespace Project.Data.Migrations
                     b.Property<bool>("HasMBA")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ManagerId")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartOfEmployment")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Name");
+                    b.HasKey("ManagerId");
 
                     b.ToTable("Managers");
                 });
 
             modelBuilder.Entity("Project.Models.Department", b =>
                 {
-                    b.HasOne("Project.Models.Employee", null)
+                    b.HasOne("Project.Models.Employee", "Employees")
                         .WithMany("Departments")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("Project.Models.Employee", b =>

@@ -15,8 +15,7 @@ namespace Project.Data
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Department> Departments { get; set; }
 
-        public DataDbContext(DbContextOptions<DataDbContext> options)
-             : base(options)
+        public DataDbContext()
         {
             Database.EnsureCreated();
         }
@@ -30,14 +29,15 @@ namespace Project.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>()
-        .HasOne(e => e.Departments)
-        .WithMany(d => d.Employees)
-        .HasForeignKey(e => e.DepartmentId);
+        .HasMany(e => e.Departments)
+        .WithOne(d => d.Employees)
+        .HasForeignKey(e => e.EmployeeID);
 
-            modelBuilder.Entity<Manager>()
-                .HasOne(m => m.Department)
-                .WithMany(d => d.Managers)
-                .HasForeignKey(m => m.DepartmentId);
+            modelBuilder.Entity<Manager>();
+            modelBuilder.Entity<Department>().HasKey(d => d.DepartmentCode);
+
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
