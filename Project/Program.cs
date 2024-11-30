@@ -26,11 +26,13 @@ namespace Project
                 services.AddSingleton<IEmployeeService, EmpService>();
                 services.AddSingleton<IManagerService, ManService>();
                 services.AddSingleton<IDepartmentService, DepService>();
+            })
+            .Build();
+            host.Start();
 
 
 
-
-                var menu = new ConsoleMenu(args, level: 0)
+            var menu = new ConsoleMenu(args, level: 0)
               .Add("Adat import (XML)", () => ImportXmlData())
               .Add("Adat import (WEB JSON)", () => ImportJsonData())
               .Add("Adat export", () => SomeAction("Three"))
