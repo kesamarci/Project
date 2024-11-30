@@ -12,8 +12,8 @@ using Project.Data;
 namespace Project.Data.Migrations
 {
     [DbContext(typeof(DataDbContext))]
-    [Migration("20241129204754_sdfsdf")]
-    partial class sdfsdf
+    [Migration("20241130135911_uh")]
+    partial class uh
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

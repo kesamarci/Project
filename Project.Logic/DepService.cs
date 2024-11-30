@@ -1,4 +1,5 @@
-﻿using Project.Models;
+﻿using Project.Data;
+using Project.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace Project.Logic
 {
-    public interface IDepartmentService
+    public interface IDepartmentService 
     {
         Department GetDepartmentByCode(string code);
         IEnumerable<Department> GetAllDepartments();
         void AddDepartment(Department department);
         void UpdateDepartment(Department department);
-        void DeleteDepartment(string code);
+        void DeleteDepartment(Department code);
     }
     public class DepService : IDepartmentService
     {
-        private readonly IDepartmentService _departmentService;
-        public DepService(IDepartmentService departmentService)
+        private readonly IDepartmentDataProvider _departmentService;
+        public DepService(IDepartmentDataProvider departmentService)
         {
             _departmentService = departmentService;
         }
@@ -38,7 +39,7 @@ namespace Project.Logic
         {
             _departmentService.UpdateDepartment(department);
         }
-        public void DeleteDepartment(string code)
+        public void DeleteDepartment(Department code)
         {
             _departmentService.DeleteDepartment(code);
         }

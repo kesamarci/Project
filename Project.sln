@@ -8,10 +8,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.Data", "Project.Data\Project.Data.csproj", "{5310D265-D2F9-4B37-BC70-28F9BA27DEC7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.Logic", "Project.Logic\Project.Logic.csproj", "{60D6E940-DA06-4099-8C07-2C2F46A38319}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5310D265-D2F9-4B37-BC70-28F9BA27DEC7} = {5310D265-D2F9-4B37-BC70-28F9BA27DEC7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.Models", "Project.Models\Project.Models.csproj", "{E4F7D31B-C4A8-46AD-8369-2395564F955B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.Repo", "Project.Repo\Project.Repo.csproj", "{2A50FFB9-440F-41D8-B177-1501F3A31E55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +36,6 @@ Global
 		{E4F7D31B-C4A8-46AD-8369-2395564F955B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4F7D31B-C4A8-46AD-8369-2395564F955B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4F7D31B-C4A8-46AD-8369-2395564F955B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2A50FFB9-440F-41D8-B177-1501F3A31E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A50FFB9-440F-41D8-B177-1501F3A31E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A50FFB9-440F-41D8-B177-1501F3A31E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A50FFB9-440F-41D8-B177-1501F3A31E55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

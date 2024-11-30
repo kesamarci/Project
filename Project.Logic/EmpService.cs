@@ -1,4 +1,5 @@
-﻿using Project.Models;
+﻿using Project.Data;
+using Project.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,12 @@ namespace Project.Logic
         IEnumerable<Employee> GetAllEmployees();
         void AddEmployee(Employee employee);
         void UpdateEmployee(Employee employee);
-        void DeleteEmployee(string id);
+        void DeleteEmployee(Employee id);
     }
     public class EmpService : IEmployeeService
     {
-        private readonly IEmployeeService _employeeService;
-        public EmpService(IEmployeeService employeeService)
+        private readonly IEmployeeDataProvider _employeeService;
+        public EmpService(IEmployeeDataProvider employeeService)
         {
             _employeeService = employeeService;
         }
@@ -38,7 +39,7 @@ namespace Project.Logic
         {
             _employeeService.UpdateEmployee(employee);
         }
-        public void DeleteEmployee(string id)
+        public void DeleteEmployee(Employee id)
         {
             _employeeService.DeleteEmployee(id);
         }

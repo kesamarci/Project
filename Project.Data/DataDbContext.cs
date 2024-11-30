@@ -17,6 +17,8 @@ namespace Project.Data
 
         public DataDbContext()
         {
+
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -28,13 +30,14 @@ namespace Project.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Department>().HasKey(d => d.DepartmentCode);
             modelBuilder.Entity<Employee>()
         .HasMany(e => e.Departments)
         .WithOne(d => d.Employees)
         .HasForeignKey(e => e.EmployeeID);
 
             modelBuilder.Entity<Manager>();
-            modelBuilder.Entity<Department>().HasKey(d => d.DepartmentCode);
+           
 
 
             base.OnModelCreating(modelBuilder);

@@ -14,7 +14,7 @@ namespace Project.Data
         Employee GetEmployeeById(string employeeId);
         void AddEmployee(Employee employee);
         void UpdateEmployee(Employee employee);
-        void DeleteEmployee(string employeeId);
+        void DeleteEmployee(Employee employee);
     }
     public class EmployeeDataProvider : IEmployeeDataProvider
     {
@@ -48,14 +48,12 @@ namespace Project.Data
             _context.SaveChanges();
         }
 
-        public void DeleteEmployee(string employeeId)
+        public void DeleteEmployee(Employee employee)
         {
-            var employee = _context.Employees.Find(employeeId);
-            if (employee != null)
-            {
+            
                 _context.Employees.Remove(employee);
                 _context.SaveChanges();
-            }
+            
         }
     }
 }

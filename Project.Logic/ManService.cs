@@ -1,4 +1,5 @@
-﻿using Project.Models;
+﻿using Project.Data;
+using Project.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,12 @@ namespace Project.Logic
         IEnumerable<Manager> GetAllManagers();
         void AddManager(Manager manager);
         void UpdateManager(Manager manager);
-        void DeleteManager(string id);
+        void DeleteManager(Manager manager);
     }
     public class ManService : IManagerService
     {
-        private readonly IManagerService _managerService;
-        public ManService(IManagerService managerService)
+        private readonly IManagerDataProvider _managerService;
+        public ManService(IManagerDataProvider managerService)
         {
             _managerService = managerService;
         }
@@ -38,9 +39,9 @@ namespace Project.Logic
         {
             _managerService.UpdateManager(manager);
         }
-        public void DeleteManager(string id)
+        public void DeleteManager(Manager manager)
         {
-            _managerService.DeleteManager(id);
+            _managerService.DeleteManager(manager);
         }
     }
 }
