@@ -13,7 +13,7 @@ namespace Project.Data
         Department GetDepartmentByCode(string departmentCode);
         void AddDepartment(Department department);
         void UpdateDepartment(Department department);
-        void DeleteDepartment(Department department);
+        void DeleteDepartment(string department);
     }
     public class DepartmentDataProvider : IDepartmentDataProvider
     {
@@ -40,12 +40,14 @@ namespace Project.Data
             _context.Departments.Update(department);
             _context.SaveChanges();
         }
-        public void DeleteDepartment(Department department)
+        public void DeleteDepartment(string departmentCode)
         {
-           
+            var department = _context.Departments.FirstOrDefault(d => d.DepartmentCode == departmentCode);
+            if (department != null)
+            {
                 _context.Departments.Remove(department);
                 _context.SaveChanges();
-            
+            }
         }
     }
    

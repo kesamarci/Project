@@ -17,7 +17,6 @@ namespace Project.Data
 
         public DataDbContext()
         {
-
             Database.EnsureDeleted();
             Database.EnsureCreated();
         }

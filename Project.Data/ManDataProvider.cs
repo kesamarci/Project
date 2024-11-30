@@ -14,7 +14,7 @@ namespace Project.Data
         Manager GetManagerById(string managerId);
         void AddManager(Manager manager);
         void UpdateManager(Manager manager);
-        void DeleteManager(Manager manager);
+        void DeleteManager(string managerid);
     }
     public class ManagerDataProvider : IManagerDataProvider
     {
@@ -56,12 +56,14 @@ namespace Project.Data
             _context.SaveChanges();
         }
 
-        public void DeleteManager(Manager manager)
+        public void DeleteManager(string managerid)
         {
-           
+            var manager = _context.Managers.Find(managerid);
+            if (manager != null)
+            {
                 _context.Managers.Remove(manager);
                 _context.SaveChanges();
-            
+            }
         }
     }
 }

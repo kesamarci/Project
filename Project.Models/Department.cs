@@ -16,6 +16,8 @@ namespace Project.Models
         public string DepartmentCode { get; set; }
         public string HeadOfDepartment { get; set; }
         public virtual Employee Employees { get; set; }
+
+        public virtual ICollection<Employee> Employeess { get; set; }
     }
 
 }

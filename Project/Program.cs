@@ -41,15 +41,15 @@ namespace Project
             var empService = host.Services.GetRequiredService<IEmployeeService>();
             var manService = host.Services.GetRequiredService<IManagerService>();
 
-           
+            var menu2 = new MainMenuCrud(empService, manService, depService);
             var menu = new ConsoleMenu(args, level: 0)
-              .Add("Adat import (XML)", () => ImportXmlToDatabase(empService ,depService,"employees-departments.xml"))
-              .Add("Adat import (WEB JSON)", () =>ImportJsonToDatabase(manService, "managers.json"))
-              .Add("Adat export", () => SomeAction("Three"))
-              .Add("CRUD", () => SomeAction("Four"))
-              .Add("Grafikon", () => SomeAction("Five"))
-              .Add("Lekérdezések", () => SomeAction("Six"))
-              .Add("Exit", () => Environment.Exit(0));
+                .Add("Adat import (XML)", () => ImportXmlToDatabase(empService, depService, "employees-departments.xml"))
+                .Add("Adat import (WEB JSON)", () => ImportJsonToDatabase(manService, "managers.json"))
+                .Add("Adat export", () => SomeAction("Three"))
+                .Add("CRUD", (menu) => menu2.Show())
+                .Add("Grafikon", () => SomeAction("Five"))
+                .Add("Lekérdezések", () => SomeAction("Six"))
+                .Add("Exit", () => Environment.Exit(0));
               
 
             
