@@ -1,5 +1,8 @@
 ﻿using ConsoleTools;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Project.Data;
+using Project.Logic;
 using Project.Models;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -11,8 +14,23 @@ namespace Project
         
         static void Main(string[] args)
         {
+            var host = Host.CreateDefaultBuilder(args)
+            .ConfigureServices((context, services) =>
+            {
+                services.AddScoped<DataDbContext>();
+                services.AddSingleton<IEmployeeDataProvider, EmployeeDataProvider>();
+                services.AddSingleton<IManagerDataProvider, ManagerDataProvider>();
+                services.AddSingleton<IDepartmentDataProvider, DepartmentDataProvider>();
 
-            var menu = new ConsoleMenu(args, level: 0)
+                // Services
+                services.AddSingleton<IEmployeeService, EmpService>();
+                services.AddSingleton<IManagerService, ManService>();
+                services.AddSingleton<IDepartmentService, DepService>();
+
+
+
+
+                var menu = new ConsoleMenu(args, level: 0)
               .Add("Adat import (XML)", () => ImportXmlData())
               .Add("Adat import (WEB JSON)", () => ImportJsonData())
               .Add("Adat export", () => SomeAction("Three"))
