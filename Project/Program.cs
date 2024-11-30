@@ -49,7 +49,7 @@ namespace Project
                 .Add("Adat import (WEB JSON)", () => ImportJsonToDatabase(manService, "managers.json"))
                 .Add("Adat export", () => SomeAction("Three"))
                 .Add("CRUD", (menu) => menu2.Show())
-                .Add("Grafikon", () => DisplaySalaryBarChart((List<Employee>)empService.GetAllEmployees()))
+                .Add("Grafikon", () => DisplaySalaryBarChart(empService.GetAllEmployees().ToList()))
                 .Add("Lekérdezések", () => SomeAction("Six"))
                 .Add("Exit", () => Environment.Exit(0));
               
