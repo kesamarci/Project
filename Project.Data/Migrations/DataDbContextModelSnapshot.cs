@@ -63,6 +63,9 @@ namespace Project.Data.Migrations
                     b.Property<int>("CompletedProjects")
                         .HasColumnType("int");
 
+                    b.Property<string>("DepartmentCode")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -93,6 +96,8 @@ namespace Project.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentCode");
 
                     b.ToTable("Employees");
                 });
@@ -129,6 +134,18 @@ namespace Project.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("Project.Models.Employee", b =>
+                {
+                    b.HasOne("Project.Models.Department", null)
+                        .WithMany("Employeess")
+                        .HasForeignKey("DepartmentCode");
+                });
+
+            modelBuilder.Entity("Project.Models.Department", b =>
+                {
+                    b.Navigation("Employeess");
                 });
 
             modelBuilder.Entity("Project.Models.Employee", b =>

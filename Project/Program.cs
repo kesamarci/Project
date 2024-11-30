@@ -16,9 +16,9 @@ namespace Project
         
         static void Main(string[] args)
         {
+
             
-            
-                    
+
             var host = Host.CreateDefaultBuilder(args)
             .ConfigureServices((context, services) =>
             {
@@ -41,13 +41,15 @@ namespace Project
             var empService = host.Services.GetRequiredService<IEmployeeService>();
             var manService = host.Services.GetRequiredService<IManagerService>();
 
+            
+
             var menu2 = new MainMenuCrud(empService, manService, depService);
             var menu = new ConsoleMenu(args, level: 0)
                 .Add("Adat import (XML)", () => ImportXmlToDatabase(empService, depService, "employees-departments.xml"))
                 .Add("Adat import (WEB JSON)", () => ImportJsonToDatabase(manService, "managers.json"))
                 .Add("Adat export", () => SomeAction("Three"))
                 .Add("CRUD", (menu) => menu2.Show())
-                .Add("Grafikon", () => SomeAction("Five"))
+                .Add("Grafikon", () => DisplaySalaryBarChart((List<Employee>)empService.GetAllEmployees()))
                 .Add("Lekérdezések", () => SomeAction("Six"))
                 .Add("Exit", () => Environment.Exit(0));
               
@@ -59,8 +61,25 @@ namespace Project
            
 
         }
+        public static void DisplaySalaryBarChart(List<Employee> employees)
+        {
+            Console.Clear();
+            Console.WriteLine("Alkalmazottak fizetése oszlopdiagram formájában:\n");
 
-            public static void ImportXmlToDatabase(IEmployeeService empdata,IDepartmentService depdata  ,string xmlFilePath)
+            int maxSalary = employees.Max(e => e.Salary);
+            int maxNameLength = employees.Max(e => e.Name.Length);
+
+            foreach (var employee in employees)
+            {
+                string name = employee.Name.PadRight(maxNameLength);
+                int barLength = (int)Math.Round((double)employee.Salary / maxSalary * 20); // 20 a max oszlophossz
+                string bar = new string('█', barLength);
+                Console.WriteLine($"{name} {bar} {employee.Salary:N0} HUF");
+            }
+            Console.ReadKey();
+        }
+
+        public static void ImportXmlToDatabase(IEmployeeService empdata,IDepartmentService depdata  ,string xmlFilePath)
             {
             Console.WriteLine("XML import kezdése..");
                 List<Employee> employees = ProcessEmployeesFromXml(xmlFilePath);
@@ -87,11 +106,13 @@ namespace Project
                 }
                 if (empdata.GetAllEmployees()!=null&&depdata.GetAllDepartments()!=null)
                 {
-                Console.WriteLine("Sikeres Import");
+                     Console.WriteLine("Sikeres Import");
+                 Console.ReadKey();
                 }
                
 
-               
+
+
             }
 
             public static void ImportJsonToDatabase(IManagerService data, string jsonFilePath)
@@ -107,6 +128,7 @@ namespace Project
                 
 
                 Console.WriteLine("JSON adatok importálva az adatbázisba.");
+                 Console.ReadKey();
             }
 
             public static List<Employee> ProcessEmployeesFromXml(string filePath)
