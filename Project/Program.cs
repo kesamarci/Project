@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Project.Client;
 using Project.Data;
 using Project.Logic;
+using Project.Logic.LINQ;
 using Project.Models;
 using Project.Models.Attributumos;
 using System;
@@ -46,13 +47,14 @@ namespace Project
             DataFetcher df = new DataFetcher();
 
             var menu2 = new MainMenuCrud(empService, manService, depService);
+            var queryMenu = new QueryMenu(manService, empService,depService);
             var menu = new ConsoleMenu(args, level: 0)
                 .Add("Adat import (XML)", () => ImportXmlToDatabase(empService, depService, "employees-departments.xml"))
-                .Add("Adat import (WEB JSON)", () => ImportJsonToDatabase(manService, "managers.json"))
+                .Add("Adat import (WEB JSON)", () => ImportJsonToDatabase(manService))
                 .Add("Adat export", () => df.FetchDataFromProgram())
                 .Add("CRUD", (menu) => menu2.Show())
                 .Add("Grafikon", () => DisplaySalaryBarChart(empService.GetAllEmployees().ToList()))
-                .Add("Lekérdezések", () => SomeAction("Six"))
+                .Add("Lekérdezések", () => queryMenu.Show())
                 .Add("Exit", () => Environment.Exit(0));
               
 
@@ -63,6 +65,12 @@ namespace Project
 
            
         }
+
+        private static void SomeAction()
+        {
+            throw new NotImplementedException();
+        }
+
         public static void DisplaySalaryBarChart(List<Employee> employees)
         {
             Console.Clear();
@@ -81,9 +89,9 @@ namespace Project
             Console.ReadKey();
         }
 
-        public static void ImportXmlToDatabase(IEmployeeService empdata,IDepartmentService depdata  ,string xmlFilePath)
+            public static void ImportXmlToDatabase(IEmployeeService empdata,IDepartmentService depdata  ,string xmlFilePath)
             {
-            Console.WriteLine("XML import kezdése..");
+                Console.WriteLine("XML import kezdése..");
                 List<Employee> employees = ProcessEmployeesFromXml(xmlFilePath);
                 var depCache=new Dictionary<string, Department>();
                 foreach (var employee in employees)
@@ -106,20 +114,21 @@ namespace Project
                     employee.Departments = departmentAdd;
                     empdata.AddEmployee(employee);
                 }
-                if (empdata.GetAllEmployees()!=null&&depdata.GetAllDepartments()!=null)
-                {
-                     Console.WriteLine("Sikeres Import");
-                 Console.ReadKey();
-                }
+                    if (empdata.GetAllEmployees()!=null&&depdata.GetAllDepartments()!=null)
+                    {
+                         Console.WriteLine("Sikeres Import");
+                     Console.ReadKey();
+                    }
                
 
 
 
             }
+            
 
-            public static void ImportJsonToDatabase(IManagerService data, string jsonFilePath)
+            public static void ImportJsonToDatabase(IManagerService data)
             {
-                List<Manager> managers = ProcessManagersFromJson(jsonFilePath);
+                List<Manager> managers = ProcessManagersFromJson();
 
                 foreach (var manager in managers)
                 {
@@ -163,10 +172,20 @@ namespace Project
                 }).ToList();
             }
 
-            public static List<Manager> ProcessManagersFromJson(string filePath)
+            public static List<Manager> ProcessManagersFromJson()
             {
-                string jsonString = File.ReadAllText(filePath);
-                return JsonSerializer.Deserialize<List<Manager>>(jsonString);
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpResponseMessage response = client.GetAsync("https://nik.siposm.hu/db/managers.json").Result;
+                    response.EnsureSuccessStatusCode();
+                    var jsonString = response.Content.ReadAsStringAsync().Result;
+                    if (response.IsSuccessStatusCode==true)
+                    {
+                        Console.WriteLine("Sikeres Import");
+                    }
+                    return JsonSerializer.Deserialize<List<Manager>>(jsonString)!;
+            }
+           
             }
 
             
@@ -241,10 +260,7 @@ namespace Project
         }
 
 
-        private static void SomeAction(string v)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 
     

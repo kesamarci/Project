@@ -57,10 +57,11 @@ namespace Project.Logic
         {
             Console.WriteLine("Válassz egy műveletet a Menedzserekhez:");
             Console.WriteLine("1. Új menedzser hozzáadása");
-            Console.WriteLine("2. Menedzserek listázása");
-            Console.WriteLine("3. Menedzser módosítása");
-            Console.WriteLine("4. Menedzser törlése");
-            Console.WriteLine("5. Vissza");
+            Console.WriteLine("2. Menedzser listázása");
+            Console.WriteLine("3. Menedzserek listázása");
+            Console.WriteLine("4. Menedzser módosítása");
+            Console.WriteLine("5. Menedzser törlése");
+            Console.WriteLine("6. Vissza");
             var choice = Console.ReadLine();
 
             switch (choice)
@@ -69,15 +70,18 @@ namespace Project.Logic
                     AddManager();
                     break;
                 case "2":
-                    ListManagers();
+                    ListManager();
                     break;
                 case "3":
-                    UpdateManager();
+                    ListManagers();
                     break;
                 case "4":
-                    DeleteManager();
+                    UpdateManager();
                     break;
                 case "5":
+                    DeleteManager();
+                    break;
+                case "6":
                     return;
                 default:
                     Console.WriteLine("Érvénytelen választás.");
@@ -124,6 +128,19 @@ namespace Project.Logic
             }
             Console.ReadKey();
 
+        }
+        private void ListManager()
+        {
+            Console.WriteLine("Adja meg a menedzser ID-ját:");
+            var id = Console.ReadLine();
+            var manager = _managerService.GetManagerById(id);
+            if (manager == null)
+            {
+                Console.WriteLine("Menedzser nem található.");
+                return;
+            }
+            Console.WriteLine($"ID: {manager.ManagerId}, Név: {manager.Name}, Születési év:{manager.BirthYear} , Kezdési év: {manager.StartOfEmployment.Year} , MBA: {manager.HasMBA}");
+            Console.ReadKey();
         }
 
         private void UpdateManager()

@@ -47,20 +47,24 @@ namespace Project.Logic
     public class EmployeeMenu
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IDepartmentService _departmentService;
 
-        public EmployeeMenu(IEmployeeService employeeService)
+        public EmployeeMenu(IEmployeeService employeeService, IDepartmentService departmentService)
         {
             _employeeService = employeeService;
+            _departmentService = departmentService;
         }
+
 
         public void Show()
         {
             Console.WriteLine("Válassz egy műveletet az Alkalmazottakhoz:");
             Console.WriteLine("1. Új alkalmazott hozzáadása");
-            Console.WriteLine("2. Alkalmazottak listázása");
-            Console.WriteLine("3. Alkalmazott módosítása");
-            Console.WriteLine("4. Alkalmazott törlése");
-            Console.WriteLine("5. Vissza");
+            Console.WriteLine("2. Alkalmazott listázása");
+            Console.WriteLine("3. Alkalmazottak listázása");
+            Console.WriteLine("4. Alkalmazott módosítása");
+            Console.WriteLine("5. Alkalmazott törlése");
+            Console.WriteLine("6. Vissza");
             var choice = Console.ReadLine();
 
             switch (choice)
@@ -69,15 +73,18 @@ namespace Project.Logic
                     AddEmployee();
                     break;
                 case "2":
-                    ListEmployees();
+                    ListEmployee();
                     break;
                 case "3":
-                    UpdateEmployee();
+                    ListEmployees(); 
                     break;
                 case "4":
-                    DeleteEmployee();
+                    UpdateEmployee();
                     break;
                 case "5":
+                    DeleteEmployee();
+                    break;
+                case "6":
                     return;
                 default:
                     Console.WriteLine("Érvénytelen választás.");
@@ -125,6 +132,20 @@ namespace Project.Logic
 
             Console.WriteLine("Adja meg  az alkalmazott Commissionjét:");
             var commission =int.Parse( Console.ReadLine());
+            Console.WriteLine("Adja meg  az alkalmazott department számát:");
+            var department = int.Parse(Console.ReadLine());
+            string[] departments = new string[department];
+            for (int i = 0; i < department; i++)
+            {
+                Console.WriteLine("Adja meg a department kódját:");
+                departments[i] = Console.ReadLine();
+            }
+            ICollection<Department> departmentList = new List<Department>();
+            foreach (var dep in departments)
+            {
+                departmentList.Add(_departmentService.GetDepartmentByCode(dep));
+            }
+
 
             var employee = new Employee
             {
@@ -140,7 +161,11 @@ namespace Project.Logic
                 Job = job,
                 Level = level,
                 Salary = salary,
-                Commission = commission
+                Commission = commission,
+                Departments = departmentList
+
+
+
             };
 
             _employeeService.AddEmployee(employee);
@@ -153,8 +178,25 @@ namespace Project.Logic
             var employees = _employeeService.GetAllEmployees();
             foreach (var employee in employees)
             {
-                Console.WriteLine($"ID: {employee.Id}, Név: {employee.Name}, Születési év: {employee.BirthYear}, Kezdési év: {employee.StartYear}");
+                Console.WriteLine($"ID: {employee.Id}, Név: {employee.Name}, Születési év: {employee.BirthYear}, Kezdési év: {employee.StartYear}, " +
+                    $"Kész projectjeit:{employee.CompletedProjects}, aktiv-e?\n {employee.Active}, Visszavonult-e? {employee.Retired}, Emailcimét: {employee.Email}, " +
+                    $"Telefonszámát: {employee.Phone},\n Feladata: {employee.Job}, Szintje: {employee.Level}, Fizetése: {employee.Salary}, Commissionje: {employee.Commission} \n");
             }
+            Console.ReadKey();
+        }
+        private void ListEmployee()
+        {
+            Console.WriteLine("Adja meg az alkalmazott ID-ját:");
+            var id = Console.ReadLine();
+            var employee = _employeeService.GetEmployeeById(id);
+            if (employee == null)
+            {
+                Console.WriteLine("Alkalmazott nem található.");
+                return;
+            }
+            Console.WriteLine($"ID: {employee.Id}, Név: {employee.Name}, Születési év: {employee.BirthYear}, Kezdési év: {employee.StartYear}, " +
+                    $"Kész projectjeit:{employee.CompletedProjects}, aktiv-e?\n {employee.Active}, Visszavonult-e? {employee.Retired}, Emailcimét: {employee.Email}, " +
+                    $"Telefonszámát: {employee.Phone},\n Feladata: {employee.Job}, Szintje: {employee.Level}, Fizetése: {employee.Salary}, Commissionje: {employee.Commission} \n");
             Console.ReadKey();
         }
 
@@ -178,6 +220,39 @@ namespace Project.Logic
 
             Console.WriteLine("Adja meg az új kezdési évet:");
             employee.StartYear = int.Parse(Console.ReadLine());
+            Console.WriteLine("Adja meg az alkalmazott új kész projectjeit:");
+            employee.CompletedProjects = int.Parse(Console.ReadLine());
+            Console.WriteLine("Adja meg hogy az új alkalmazott aktiv-e? (true/false)");
+            employee.Active = bool.Parse(Console.ReadLine());
+            Console.WriteLine("Adja meg hogy az új alkalmazott Visszavonult-e?");
+            employee.Retired = bool.Parse(Console.ReadLine());
+            Console.WriteLine("Adja meg az új alkalmazott Emailcimét");
+            employee.Email = Console.ReadLine();
+            Console.WriteLine("Adja meg  az új alkalmazott Telefonszámát");
+            employee.Phone = Console.ReadLine();
+            Console.WriteLine("Adja meg  az új alkalmazott a Feladatát:");
+            employee.Job = Console.ReadLine();
+            Console.WriteLine("Adja meg  az új alkalmazott Szintjét:");
+            employee.Level = Console.ReadLine();
+            Console.WriteLine("Adja meg  az új alkalmazott Fizetését:");
+            employee.Salary = int.Parse(Console.ReadLine());
+            Console.WriteLine("Adja meg  az új alkalmazott Commissionjét:");
+            employee.Commission = int.Parse(Console.ReadLine());
+            Console.WriteLine("Adja meg  az új alkalmazott department számát:");
+            var department = int.Parse(Console.ReadLine());
+            string[] departments = new string[department];
+            for (int i = 0; i < department; i++)
+            {
+                Console.WriteLine("Adja meg a department kódját:");
+                departments[i] = Console.ReadLine();
+            }
+            ICollection<Department> departmentList = new List<Department>();
+            foreach (var dep in departments)
+            {
+                departmentList.Add(_departmentService.GetDepartmentByCode(dep));
+            }
+            employee.Departments = departmentList;
+
 
             _employeeService.UpdateEmployee(employee);
             Console.WriteLine("Alkalmazott módosítva.");

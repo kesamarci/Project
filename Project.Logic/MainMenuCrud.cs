@@ -36,7 +36,7 @@ namespace Project.Logic
                     switch (choice)
                     {
                         case "1":
-                            var employeeMenu = new EmployeeMenu(_employeeService);
+                            var employeeMenu = new EmployeeMenu(_employeeService, _departmentService);
                             employeeMenu.Show();
                             break;
                         case "2":

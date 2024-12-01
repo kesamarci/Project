@@ -57,10 +57,11 @@ namespace Project.Logic
         {
             Console.WriteLine("Válassz egy műveletet a Részlegekhez:");
             Console.WriteLine("1. Új részleg hozzáadása");
-            Console.WriteLine("2. Részlegek listázása");
-            Console.WriteLine("3. Részleg módosítása");
-            Console.WriteLine("4. Részleg törlése");
-            Console.WriteLine("5. Vissza");
+            Console.WriteLine("2. Részleg listázása");
+            Console.WriteLine("3. Részlegek listázása");
+            Console.WriteLine("4. Részleg módosítása");
+            Console.WriteLine("5. Részleg törlése");
+            Console.WriteLine("6. Vissza");
             var choice = Console.ReadLine();
 
             switch (choice)
@@ -69,15 +70,18 @@ namespace Project.Logic
                     AddDepartment();
                     break;
                 case "2":
-                    ListDepartments();
+                    ListDepartment();
                     break;
                 case "3":
-                    UpdateDepartment();
+                    ListDepartments();
                     break;
                 case "4":
-                    DeleteDepartment();
+                    UpdateDepartment();
                     break;
                 case "5":
+                    DeleteDepartment();
+                    break;
+                case "6":
                     return;
                 default:
                     Console.WriteLine("Érvénytelen választás.");
@@ -119,6 +123,19 @@ namespace Project.Logic
             }
             Console.ReadKey();
 
+        }
+        private void ListDepartment()
+        {
+            Console.WriteLine("Adja meg a részleg kódját:");
+            var code = Console.ReadLine();
+            var department = _departmentService.GetDepartmentByCode(code);
+            if (department == null)
+            {
+                Console.WriteLine("Részleg nem található.");
+                return;
+            }
+            Console.WriteLine($"Név: {department.Name}, Kód: {department.DepartmentCode}, Vezető: {department.HeadOfDepartment}");
+            Console.ReadKey();
         }
 
         private void UpdateDepartment()
