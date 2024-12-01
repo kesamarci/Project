@@ -74,6 +74,9 @@ namespace Project.Logic.LINQ
                     QueryLongestWorkingManager();
                     break;
                 case "4":
+                    QueryManagerWithLongestWorkLifeRatio();
+                    break;
+                case "5":
                     Show();
                     break;
                 default:
@@ -130,6 +133,27 @@ namespace Project.Logic.LINQ
                 Console.WriteLine("Nincsenek vezetők az adatbázisban.");
             }
             Console.ReadKey();
+        }
+        private void QueryManagerWithLongestWorkLifeRatio()
+        {
+            var manager = _managerService.GetAllManagers()
+                .Select(m => new
+                {
+                    Manager = m,
+                    WorkLifeRatio = (DateTime.Now - m.StartOfEmployment) / (DateTime.Now.Year - m.BirthYear)
+                })
+                .OrderByDescending(x => x.WorkLifeRatio)
+                .FirstOrDefault();
+
+            if (manager != null)
+            {
+                Console.WriteLine($"A legtöbbet dolgozó vezető az élt éveihez képest: {manager.Manager.Name} " +
+                                  $"({manager.WorkLifeRatio:P2})");
+            }
+            else
+            {
+                Console.WriteLine("Nincsenek vezetők az adatbázisban.");
+            }
         }
     }
 }
