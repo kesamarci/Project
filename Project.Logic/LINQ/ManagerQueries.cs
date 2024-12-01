@@ -115,5 +115,21 @@ namespace Project.Logic.LINQ
             }
             Console.ReadKey();
         }
+        private void QueryLongestWorkingManager()
+        {
+            var manager = _managerService.GetAllManagers()
+                .OrderBy(m => m.StartOfEmployment)
+                .FirstOrDefault();
+
+            if (manager != null)
+            {
+                Console.WriteLine($"Legrégebb óta munkában lévő vezető: {manager.Name} ({manager.StartOfEmployment:yyyy-MM-dd})");
+            }
+            else
+            {
+                Console.WriteLine("Nincsenek vezetők az adatbázisban.");
+            }
+            Console.ReadKey();
+        }
     }
 }
