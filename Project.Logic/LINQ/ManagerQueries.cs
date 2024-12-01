@@ -91,6 +91,11 @@ namespace Project.Logic.LINQ
         {
             // A vegyes lekérdezéseket is külön menüpontként kezeljük.
         }
-        
+        private void QueryManagersWithDoctorates()
+        {
+            var count = _managerService.GetAllManagers().Count(m => m.Name.StartsWith("Dr"));
+            Console.WriteLine($"Doktori címmel rendelkező vezetők száma: {count}");
+            Console.ReadKey();
+        }
     }
 }
