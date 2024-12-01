@@ -97,5 +97,23 @@ namespace Project.Logic.LINQ
             Console.WriteLine($"Doktori címmel rendelkező vezetők száma: {count}");
             Console.ReadKey();
         }
+        private void QueryManagersWithDoctorateNoMBA()
+        {
+            var managers = _managerService.GetAllManagers()
+                .Where(m => !m.HasMBA && m.Name.StartsWith("Dr"))
+                .Select(m => m.Name)
+                .ToList();
+
+            if (managers.Any())
+            {
+                Console.WriteLine("MBA végzettség nélküli doktori cím tulajdonosai:");
+                managers.ForEach(m => Console.WriteLine($"- {m}"));
+            }
+            else
+            {
+                Console.WriteLine("Nincs ilyen vezető.");
+            }
+            Console.ReadKey();
+        }
     }
 }
