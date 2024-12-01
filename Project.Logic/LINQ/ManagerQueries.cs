@@ -77,6 +77,9 @@ namespace Project.Logic.LINQ
                     QueryManagerWithLongestWorkLifeRatio();
                     break;
                 case "5":
+                    QueryMBAProportion();
+                    break;
+                case "6":
                     Show();
                     break;
                 default:
@@ -149,6 +152,21 @@ namespace Project.Logic.LINQ
             {
                 Console.WriteLine($"A legtöbbet dolgozó vezető az élt éveihez képest: {manager.Manager.Name} " +
                                   $"({manager.WorkLifeRatio:P2})");
+            }
+            else
+            {
+                Console.WriteLine("Nincsenek vezetők az adatbázisban.");
+            }
+        }
+        private void QueryMBAProportion()
+        {
+            var total = _managerService.GetAllManagers().Count();
+            var withMBA = _managerService.GetAllManagers().Count(m => m.HasMBA);
+
+            if (total > 0)
+            {
+                var ratio = (double)withMBA / total * 100;
+                Console.WriteLine($"MBA végzettséggel rendelkező vezetők aránya: {ratio:F2}%");
             }
             else
             {
