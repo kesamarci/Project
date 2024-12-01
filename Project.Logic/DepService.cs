@@ -90,8 +90,7 @@ namespace Project.Logic
 
             Console.WriteLine("Adja meg a részleg nevét:");
             var name = Console.ReadLine();
-            Console.WriteLine("Adja meg a az EmployeeID-t:");
-            var empid =Console.ReadLine();
+           
 
             Console.WriteLine("Adja meg a részleg kódját:");
             var code = Console.ReadLine();
@@ -102,7 +101,6 @@ namespace Project.Logic
             var department = new Department
             {
                 Name = name,
-                EmployeeID = empid,
                 DepartmentCode = code,
                 HeadOfDepartment = head
             };

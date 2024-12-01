@@ -4,9 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Project.Models.Attributumos.Attri;
 
 namespace Project.Models
 {
+    [ToExport("Employes")]
     public class Employee
     {
 
@@ -24,6 +26,7 @@ namespace Project.Models
         public string Level { get; set; }
         public int Salary { get; set; }
         public decimal Commission { get; set; }
+
         public virtual ICollection<Department> Departments { get; set; }
     }
 }

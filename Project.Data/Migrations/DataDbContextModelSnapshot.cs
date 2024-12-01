@@ -22,6 +22,21 @@ namespace Project.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DepartmentEmployee", b =>
+                {
+                    b.Property<string>("DepartmentsDepartmentCode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EmployeessId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("DepartmentsDepartmentCode", "EmployeessId");
+
+                    b.HasIndex("EmployeessId");
+
+                    b.ToTable("DepartmentEmployee");
+                });
+
             modelBuilder.Entity("Project.Models.Department", b =>
                 {
                     b.Property<string>("DepartmentCode")
@@ -29,7 +44,7 @@ namespace Project.Data.Migrations
 
                     b.Property<string>("EmployeeID")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HeadOfDepartment")
                         .IsRequired()
@@ -40,8 +55,6 @@ namespace Project.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DepartmentCode");
-
-                    b.HasIndex("EmployeeID");
 
                     b.ToTable("Departments");
                 });
@@ -62,9 +75,6 @@ namespace Project.Data.Migrations
 
                     b.Property<int>("CompletedProjects")
                         .HasColumnType("int");
-
-                    b.Property<string>("DepartmentCode")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -97,8 +107,6 @@ namespace Project.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentCode");
-
                     b.ToTable("Employees");
                 });
 
@@ -125,32 +133,19 @@ namespace Project.Data.Migrations
                     b.ToTable("Managers");
                 });
 
-            modelBuilder.Entity("Project.Models.Department", b =>
+            modelBuilder.Entity("DepartmentEmployee", b =>
                 {
-                    b.HasOne("Project.Models.Employee", "Employees")
-                        .WithMany("Departments")
-                        .HasForeignKey("EmployeeID")
+                    b.HasOne("Project.Models.Department", null)
+                        .WithMany()
+                        .HasForeignKey("DepartmentsDepartmentCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Employees");
-                });
-
-            modelBuilder.Entity("Project.Models.Employee", b =>
-                {
-                    b.HasOne("Project.Models.Department", null)
-                        .WithMany("Employeess")
-                        .HasForeignKey("DepartmentCode");
-                });
-
-            modelBuilder.Entity("Project.Models.Department", b =>
-                {
-                    b.Navigation("Employeess");
-                });
-
-            modelBuilder.Entity("Project.Models.Employee", b =>
-                {
-                    b.Navigation("Departments");
+                    b.HasOne("Project.Models.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

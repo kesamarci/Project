@@ -1,9 +1,11 @@
 ﻿using ConsoleTools;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Project.Client;
 using Project.Data;
 using Project.Logic;
 using Project.Models;
+using Project.Models.Attributumos;
 using System;
 using System.Text.Json;
 using System.Xml.Linq;
@@ -41,13 +43,13 @@ namespace Project
             var empService = host.Services.GetRequiredService<IEmployeeService>();
             var manService = host.Services.GetRequiredService<IManagerService>();
 
-            
+            DataFetcher df = new DataFetcher();
 
             var menu2 = new MainMenuCrud(empService, manService, depService);
             var menu = new ConsoleMenu(args, level: 0)
                 .Add("Adat import (XML)", () => ImportXmlToDatabase(empService, depService, "employees-departments.xml"))
                 .Add("Adat import (WEB JSON)", () => ImportJsonToDatabase(manService, "managers.json"))
-                .Add("Adat export", () => SomeAction("Three"))
+                .Add("Adat export", () => df.FetchDataFromProgram())
                 .Add("CRUD", (menu) => menu2.Show())
                 .Add("Grafikon", () => DisplaySalaryBarChart(empService.GetAllEmployees().ToList()))
                 .Add("Lekérdezések", () => SomeAction("Six"))
@@ -58,8 +60,8 @@ namespace Project
            
                 menu.Show();
 
-           
 
+           
         }
         public static void DisplaySalaryBarChart(List<Employee> employees)
         {

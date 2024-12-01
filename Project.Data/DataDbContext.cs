@@ -29,11 +29,11 @@ namespace Project.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Department>().HasKey(d => d.DepartmentCode);
+            
             modelBuilder.Entity<Employee>()
-        .HasMany(e => e.Departments)
-        .WithOne(d => d.Employees)
-        .HasForeignKey(e => e.EmployeeID);
+            .HasMany(e => e.Departments)
+            .WithMany(d => d.Employeess);
+        
 
             modelBuilder.Entity<Manager>();
            
