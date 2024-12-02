@@ -415,6 +415,23 @@ namespace Project.Logic.LINQ
                 Console.WriteLine("Nincs adat megfelelő alkalmazottról.");
             }
         }
+        //16
+        private void QueryCommissionHigherThanBaseSalary()
+        {
+            var employees = _employeeService.GetAllEmployees()
+                .Where(e => e.Commission > e.Salary)
+                .ToList();
+            if (employees.Any())
+            {
+                Console.WriteLine("Jutalék nagyobb, mint az alapfizetés:");
+                employees.ForEach(e => Console.WriteLine($"- {e.Name}"));
+            }
+            else
+            {
+                Console.WriteLine("Nincs ilyen alkalmazott.");
+            }
+        }
+
 
     }
 }
