@@ -176,7 +176,24 @@ namespace Project.Logic.LINQ
 
         private void ShowMixedQueries()
         {
-            // A vegyes lekérdezéseket is külön menüpontként kezeljük.
+            Console.WriteLine("Vegyes lekérdezések:");
+            Console.WriteLine("1. Ki dolgozik a legrégebb óta a cégnél? Vezetők és alkalmazottakat közösen nézve.");
+            Console.WriteLine("2. Van-e olyan manager aki egyben részlegvezető is? Ha igen, ki az?");
+            Console.WriteLine("3. Kik azok, akik vagy csak részlegvezetők, vagy csak manager-ek?");
+            Console.WriteLine("4. Vissza a főmenübe");
+            Console.Write("Válassz egy opciót: ");
+            var choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    QueryLongestServingPerson();
+                    break;
+                case "2":
+                    QueryManagersAlsoHeads();
+                    break;
+                default:
+                    break;
+            }
         }
         private void QueryManagersWithDoctorates()
         {
@@ -238,6 +255,7 @@ namespace Project.Logic.LINQ
             {
                 Console.WriteLine("Nincsenek vezetők az adatbázisban.");
             }
+            Console.ReadKey();
         }
         private void QueryMBAProportion()
         {
@@ -253,20 +271,26 @@ namespace Project.Logic.LINQ
             {
                 Console.WriteLine("Nincsenek vezetők az adatbázisban.");
             }
+            Console.ReadKey();
         }
+        //1
         private void QueryEmployeesBornIn80s()
         {
             var count = _employeeService.GetAllEmployees()
                 .Count(e => e.BirthYear >= 1980 && e.BirthYear < 1990);
             Console.WriteLine($"80-as években született alkalmazottak száma: {count}");
+            Console.ReadKey();
         }
+        //2
         private void QueryEmployeesInMultipleDepartments()
         {
             var employees = _employeeService.GetAllEmployees()
                 .Where(e => e.Departments.Count > 1)
                 .ToList();
             Console.WriteLine($"Két vagy több részlegen dolgozó alkalmazottak száma: {employees.Count}");
+            Console.ReadKey();
         }
+        //3
         private void QueryRetiredButWorkingEmployees()
         {
             var employees = _employeeService.GetAllEmployees()
@@ -282,20 +306,29 @@ namespace Project.Logic.LINQ
             {
                 Console.WriteLine("Nincs ilyen alkalmazott.");
             }
+            Console.ReadKey();
+
         }
+        //4
         private void QueryFullyRetiredEmployees()
         {
             var count = _employeeService.GetAllEmployees()
                 .Count(e => e.Retired && !e.Active);
             Console.WriteLine($"Nyugdíjba ment alkalmazottak száma: {count}");
+            Console.ReadKey();
         }
+        //5
         private void QueryAverageSalaryOfRetirees()
         {
-            var average = _employeeService.GetAllEmployees()
-                .Where(e => e.Retired)
-                .Average(e => e.Salary);
-            Console.WriteLine($"Nyugdíjasok átlagkeresete: {average:C0}");
+            var averageSalary = _employeeService.GetAllEmployees()
+        .Where(e => e.Retired)
+        .Select(e => e.Salary)
+        .DefaultIfEmpty(0)
+        .Average();
+            Console.WriteLine($"Nyugdíjba ment alkalmazottak átlagos keresete (ha van ilyen, ha nincs akkor 0): {averageSalary:C}");
+            Console.ReadKey();
         }
+        //6
         private void QueryEmployeesByTotalEarningsDescending()
         {
             var employees = _employeeService.GetAllEmployees()
@@ -303,27 +336,34 @@ namespace Project.Logic.LINQ
                 .ToList();
             Console.WriteLine("Kereset alapján csökkenő sorrend:");
             employees.ForEach(e => Console.WriteLine($"- {e.Name}"));
+            Console.ReadKey();
         }
+        //7
         private void QueryEmployeeSkillComposition()
         {
             var juniors = _employeeService.GetAllEmployees().Count(e => e.Level == "Junior");
             var mediors = _employeeService.GetAllEmployees().Count(e => e.Level == "Medior");
             var seniors = _employeeService.GetAllEmployees().Count(e => e.Level == "Senior");
             Console.WriteLine($"Junior: {juniors}, Medior: {mediors}, Senior: {seniors}");
+            Console.ReadKey();
         }
+        //8
         private void QueryEmployeesInDoctorateLedDepartments()
         {
             var employees = _employeeService.GetAllEmployees()
                 .Where(e => e.Departments.Any(d => d.HeadOfDepartment.StartsWith("Dr")))
                 .ToList();
             Console.WriteLine($"Doktori címmel rendelkező vezetői alá tartozó alkalmazottak száma: {employees.Count}");
+            Console.ReadKey();
         }
+        //9
         private void QueryAboveBelowAverageSalaryEmployees()
         {
             var average = _employeeService.GetAllEmployees().Average(e => e.Salary);
             var above = _employeeService.GetAllEmployees().Count(e => e.Salary > average);
             var below = _employeeService.GetAllEmployees().Count(e => e.Salary < average);
             Console.WriteLine($"Átlagfizetés felett: {above}, alatt: {below}");
+            Console.ReadKey();
         }
         //10
         private void QueryAverageSalaryByLevel()
@@ -337,6 +377,7 @@ namespace Project.Logic.LINQ
                 })
                 .ToList();
             levels.ForEach(l => Console.WriteLine($"{l.Level}: {l.Average:C0}"));
+            Console.ReadKey();
         }
         //11
         private void QueryMediorAverageVsJuniorHighestSalary()
@@ -348,6 +389,7 @@ namespace Project.Logic.LINQ
                 .Where(e => e.Level == "Junior")
                 .Max(e => e.Salary);
             Console.WriteLine($"Medior átlagfizetés: {mediorAverage:C0}, legmagasabb junior fizetés: {juniorHighest:C0}");
+            Console.ReadKey();
         }
         //12
         private void QueryCommissionByCategory()
@@ -361,6 +403,7 @@ namespace Project.Logic.LINQ
                 })
                 .ToList();
             commissions.ForEach(c => Console.WriteLine($"{c.Level}: {c.TotalCommission:C0}"));
+            Console.ReadKey();
         }
         //13 
         private void QueryFewestProjectsEmployee()
@@ -384,6 +427,7 @@ namespace Project.Logic.LINQ
             {
                 Console.WriteLine("Nincs adat megfelelő alkalmazottról.");
             }
+            Console.ReadKey();
         }
         //14
         private void QuerySalaryByBirthOrder()
@@ -398,6 +442,7 @@ namespace Project.Logic.LINQ
                 .ToList();
             Console.WriteLine("Születési sorrend szerinti kereset:");
             employees.ForEach(e => Console.WriteLine($"- {e.Employee}: {e.Salaryy:C0}"));
+            Console.ReadKey();
         }
         //15
         private void QueryFewestProjectsActiveEmployee()
@@ -414,6 +459,7 @@ namespace Project.Logic.LINQ
             {
                 Console.WriteLine("Nincs adat megfelelő alkalmazottról.");
             }
+            Console.ReadKey();
         }
         //16
         private void QueryCommissionHigherThanBaseSalary()
@@ -430,8 +476,37 @@ namespace Project.Logic.LINQ
             {
                 Console.WriteLine("Nincs ilyen alkalmazott.");
             }
+            Console.ReadKey();
         }
-
+        //1
+        private void QueryLongestServingPerson()
+        {
+            var employees = _employeeService.GetAllEmployees()
+                .Select(e => new
+                {
+                    Employee = e.Name,
+                    StartYear = e.StartYear
+                })
+                .Concat(_managerService.GetAllManagers()
+                    .Select(m => new
+                    {
+                        Employee = m.Name,
+                        StartYear = m.StartOfEmployment.Year
+                    }))
+                .OrderBy(x => x.StartYear)
+                .FirstOrDefault();
+            if (employees != null)
+            {
+                Console.WriteLine($"A legrégebb óta a cégnél dolgozó személy: {employees.Employee}, kezdési év: {employees.StartYear}");
+            }
+            else
+            {
+                Console.WriteLine("Nincs ilyen alkalmazott vagy vezető.");
+            }
+            Console.ReadKey();
+        }
+        //2
+        
 
     }
 }
