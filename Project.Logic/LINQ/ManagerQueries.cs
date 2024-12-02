@@ -289,6 +289,13 @@ namespace Project.Logic.LINQ
                 .Count(e => e.Retired && !e.Active);
             Console.WriteLine($"Nyugdíjba ment alkalmazottak száma: {count}");
         }
+        private void QueryAverageSalaryOfRetirees()
+        {
+            var average = _employeeService.GetAllEmployees()
+                .Where(e => e.Retired)
+                .Average(e => e.Salary);
+            Console.WriteLine($"Nyugdíjasok átlagkeresete: {average:C0}");
+        }
 
     }
 }
