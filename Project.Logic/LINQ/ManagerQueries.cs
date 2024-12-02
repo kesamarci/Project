@@ -385,6 +385,20 @@ namespace Project.Logic.LINQ
                 Console.WriteLine("Nincs adat megfelelő alkalmazottról.");
             }
         }
+        //14
+        private void QuerySalaryByBirthOrder()
+        {
+            var employees = _employeeService.GetAllEmployees()
+                .OrderBy(e => e.BirthYear)
+                .Select(e => new
+                {
+                    Employee = e.Name,
+                    Salaryy = e.Salary
+                })
+                .ToList();
+            Console.WriteLine("Születési sorrend szerinti kereset:");
+            employees.ForEach(e => Console.WriteLine($"- {e.Employee}: {e.Salaryy:C0}"));
+        }
 
     }
 }
