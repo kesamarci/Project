@@ -304,6 +304,13 @@ namespace Project.Logic.LINQ
             Console.WriteLine("Kereset alapján csökkenő sorrend:");
             employees.ForEach(e => Console.WriteLine($"- {e.Name}"));
         }
+        private void QueryEmployeeSkillComposition()
+        {
+            var juniors = _employeeService.GetAllEmployees().Count(e => e.Level == "Junior");
+            var mediors = _employeeService.GetAllEmployees().Count(e => e.Level == "Medior");
+            var seniors = _employeeService.GetAllEmployees().Count(e => e.Level == "Senior");
+            Console.WriteLine($"Junior: {juniors}, Medior: {mediors}, Senior: {seniors}");
+        }
 
     }
 }
