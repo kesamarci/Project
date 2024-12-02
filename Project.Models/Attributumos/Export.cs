@@ -26,9 +26,13 @@ namespace Project.Models.Attributumos
 
                 IEnumerable<Type> objectTypes = types.Where(x => x.GetCustomAttribute<ToExportAttribute>() != null);
 
+                DateTime fileCreationDate = DateTime.Now;
 
                 XDocument xdoc = new XDocument();
-                xdoc.Add(new XElement("entities"));
+                xdoc.Add(new XElement("entities",
+                    new XAttribute("exportDate", fileCreationDate.ToString("yyyy.MM.dd. HH:mm:ss")) // Dátum formázása és hozzáadása attribútumként
+                ));
+           
 
                 foreach (var item in objectTypes)
                 {
@@ -47,7 +51,7 @@ namespace Project.Models.Attributumos
                     xdoc.Root!.Add(entityNode);
                 }
 
-                xdoc.Save("XmlExport.xml");
+                xdoc.Save("ExPoRtÁlTaM.xml");
             }
             private static XElement WriteToXML(Type objType, List<PropertyInfo> properties, List<MethodInfo> methods)
             {

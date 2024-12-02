@@ -4,9 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Project.Models.Attributumos.Attri;
 
 namespace Project.Models
 {
+    [ToExport("Manager")]
     public class Manager
     {
 
