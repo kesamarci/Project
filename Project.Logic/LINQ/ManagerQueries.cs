@@ -399,6 +399,22 @@ namespace Project.Logic.LINQ
             Console.WriteLine("Születési sorrend szerinti kereset:");
             employees.ForEach(e => Console.WriteLine($"- {e.Employee}: {e.Salaryy:C0}"));
         }
+        //15
+        private void QueryFewestProjectsActiveEmployee()
+        {
+            var employees = _employeeService.GetAllEmployees()
+                .Where(e => e.Active)
+                .OrderBy(e => e.CompletedProjects)
+                .FirstOrDefault();
+            if (employees != null)
+            {
+                Console.WriteLine($"A legkevesebb projekten dolgozó aktív alkalmazott: {employees.Name}, projektek száma: {employees.CompletedProjects}");
+            }
+            else
+            {
+                Console.WriteLine("Nincs adat megfelelő alkalmazottról.");
+            }
+        }
 
     }
 }
