@@ -283,6 +283,12 @@ namespace Project.Logic.LINQ
                 Console.WriteLine("Nincs ilyen alkalmazott.");
             }
         }
-        
+        private void QueryFullyRetiredEmployees()
+        {
+            var count = _employeeService.GetAllEmployees()
+                .Count(e => e.Retired && !e.Active);
+            Console.WriteLine($"Nyugdíjba ment alkalmazottak száma: {count}");
+        }
+
     }
 }
