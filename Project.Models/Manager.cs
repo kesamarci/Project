@@ -10,7 +10,7 @@ namespace Project.Models
     public class Manager
     {
 
-        
+        [StringLength(60)]
         public string Name { get; set; }
         [Key]
         public string ManagerId { get; set; }

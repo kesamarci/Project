@@ -11,8 +11,8 @@ namespace Project.Models
     [ToExport("Department")]
     public class Department
     {
-      
-       
+
+        [StringLength(64)]
         public string Name { get; set; }
         [Key]
         public string DepartmentCode { get; set; }

@@ -14,13 +14,16 @@ namespace Project.Models
 
         [Key]
         public string Id { get; set; }
+        [StringLength(60)]
         public string Name { get; set; }
         public int BirthYear { get; set; }
         public int StartYear { get; set; }
+        [Range(0,500)]
         public int CompletedProjects { get; set; }
         public bool Active { get; set; }
         public bool Retired { get; set; }
         public string Email { get; set; }
+        [StringLength(12)]
         public string Phone { get; set; }
         public string Job { get; set; }
         public string Level { get; set; }

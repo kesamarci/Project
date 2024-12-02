@@ -57,7 +57,9 @@ namespace Project.Logic.LINQ
             Console.WriteLine("1. Hány doktori címmel rendelkező vezető van?");
             Console.WriteLine("2. Doktori cím, de MBA nélkül: Kik?");
             Console.WriteLine("3. Legrégebb óta munkában lévő vezető");
-            Console.WriteLine("4. Vissza");
+            Console.WriteLine("4. Legtöbbet dolgozó vezető az életkorához képest");
+            Console.WriteLine("5. MBA végzettséggel rendelkező vezetők aránya");
+            Console.WriteLine("6. Vissza");
 
             Console.Write("Válassz egy opciót: ");
             var choice = Console.ReadLine();
@@ -90,7 +92,86 @@ namespace Project.Logic.LINQ
         }
         private void ShowEmployeeQueries()
         {
-            // Hasonlóan az alkalmazottakra vonatkozó lekérdezéseket is hozzáadhatjuk.
+            Console.WriteLine("Alkalmazottakal kapcsolatos lekérdezések:");
+            Console.WriteLine("1. Hány alkalmazott van, akik a 80-as években születtek?");
+            Console.WriteLine("2. Hány alkalmazott van, akik legalább két részlegen dolgoznak?");
+            Console.WriteLine("3. Jelenleg nyugdíjban lévő, de még dolgozó alkalmazottak");
+            Console.WriteLine("4. Hányan nyugdíjba mentek, és nem dolgoznak?");
+            Console.WriteLine("5. Nyugdíjasok átlagos keresete");
+            Console.WriteLine("6. Kereset alapján csökkenő sorrend");
+            Console.WriteLine("7. Tudásszint szerinti összetétel (junior, medior, senior)");
+            Console.WriteLine("8. Részlegek doktori címmel rendelkező vezetői alá tartozó alkalmazottak");
+            Console.WriteLine("9. Átlagfizetés fölött/alatt kereső alkalmazottak száma");
+            Console.WriteLine("10. Átlagfizetés az egyes szinteken");
+            Console.WriteLine("11. Medior átlagfizetés vs. legmagasabb junior fizetés");
+            Console.WriteLine("12. Kategória (junior, medior, senior) jutalék összesítése");
+            Console.WriteLine("13. Legkevesebb projekten dolgozó alkalmazott");
+            Console.WriteLine("14. Születési sorrend szerinti kereset");
+            Console.WriteLine("15. Legkevesebb projekten dolgozó aktív alkalmazott");
+            Console.WriteLine("16. Jutalék nagyobb, mint más alapfizetése");
+            Console.WriteLine("17. Vissza a főmenübe");
+
+            Console.Write("Válassz egy opciót: ");
+            var choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    QueryEmployeesBornIn80s();
+                    break;
+                case "2":
+                    QueryEmployeesInMultipleDepartments();
+                    break;
+                case "3":
+                    QueryRetiredButWorkingEmployees();
+                    break;
+                case "4":
+                    QueryFullyRetiredEmployees();
+                    break;
+                case "5":
+                    QueryAverageSalaryOfRetirees();
+                    break;
+                case "6":
+                    QueryEmployeesByTotalEarningsDescending();
+                    break;
+                case "7":
+                    QueryEmployeeSkillComposition();
+                    break;
+                case "8":
+                    QueryEmployeesInDoctorateLedDepartments();
+                    break;
+                case "9":
+                    QueryAboveBelowAverageSalaryEmployees();
+                    break;
+                case "10":
+                    QueryAverageSalaryByLevel();
+                    break;
+                case "11":
+                    QueryMediorAverageVsJuniorHighestSalary();
+                    break;
+                case "12":
+                    QueryCommissionByCategory();
+                    break;
+                case "13":
+                    QueryFewestProjectsEmployee();
+                    break;
+                case "14":
+                    QuerySalaryByBirthOrder();
+                    break;
+                case "15":
+                    QueryFewestProjectsActiveEmployee();
+                    break;
+                case "16":
+                    QueryCommissionHigherThanBaseSalary();
+                    break;
+                case "17":
+                    Show();
+                    break;
+                default:
+                    Console.WriteLine("Érvénytelen választás.");
+                    ShowEmployeeQueries();
+                    break;
+            }
         }
 
         private void ShowMixedQueries()
