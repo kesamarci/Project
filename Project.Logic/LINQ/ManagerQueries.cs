@@ -254,5 +254,11 @@ namespace Project.Logic.LINQ
                 Console.WriteLine("Nincsenek vezetők az adatbázisban.");
             }
         }
+        private void QueryEmployeesBornIn80s()
+        {
+            var count = _employeeService.GetAllEmployees()
+                .Count(e => e.BirthYear >= 1980 && e.BirthYear < 1990);
+            Console.WriteLine($"80-as években született alkalmazottak száma: {count}");
+        }
     }
 }
