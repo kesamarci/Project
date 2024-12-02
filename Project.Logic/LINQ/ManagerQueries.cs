@@ -311,6 +311,13 @@ namespace Project.Logic.LINQ
             var seniors = _employeeService.GetAllEmployees().Count(e => e.Level == "Senior");
             Console.WriteLine($"Junior: {juniors}, Medior: {mediors}, Senior: {seniors}");
         }
+        private void QueryEmployeesInDoctorateLedDepartments()
+        {
+            var employees = _employeeService.GetAllEmployees()
+                .Where(e => e.Departments.Any(d => d.HeadOfDepartment.StartsWith("Dr")))
+                .ToList();
+            Console.WriteLine($"Doktori címmel rendelkező vezetői alá tartozó alkalmazottak száma: {employees.Count}");
+        }
 
     }
 }
