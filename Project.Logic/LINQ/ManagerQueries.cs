@@ -325,6 +325,7 @@ namespace Project.Logic.LINQ
             var below = _employeeService.GetAllEmployees().Count(e => e.Salary < average);
             Console.WriteLine($"Átlagfizetés felett: {above}, alatt: {below}");
         }
+        //10
         private void QueryAverageSalaryByLevel()
         {
             var levels = _employeeService.GetAllEmployees()
@@ -336,6 +337,17 @@ namespace Project.Logic.LINQ
                 })
                 .ToList();
             levels.ForEach(l => Console.WriteLine($"{l.Level}: {l.Average:C0}"));
+        }
+        //11
+        private void QueryMediorAverageVsJuniorHighestSalary()
+        {
+            var mediorAverage = _employeeService.GetAllEmployees()
+                .Where(e => e.Level == "Medior")
+                .Average(e => e.Salary);
+            var juniorHighest = _employeeService.GetAllEmployees()
+                .Where(e => e.Level == "Junior")
+                .Max(e => e.Salary);
+            Console.WriteLine($"Medior átlagfizetés: {mediorAverage:C0}, legmagasabb junior fizetés: {juniorHighest:C0}");
         }
 
     }
