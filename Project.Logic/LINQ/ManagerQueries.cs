@@ -267,6 +267,22 @@ namespace Project.Logic.LINQ
                 .ToList();
             Console.WriteLine($"Két vagy több részlegen dolgozó alkalmazottak száma: {employees.Count}");
         }
+        private void QueryRetiredButWorkingEmployees()
+        {
+            var employees = _employeeService.GetAllEmployees()
+                .Where(e => e.Retired && e.Active)
+                .Select(e => e.Name)
+                .ToList();
+            if (employees.Any())
+            {
+                Console.WriteLine("Jelenleg nyugdíjban lévő, de dolgozó alkalmazottak:");
+                employees.ForEach(Console.WriteLine);
+            }
+            else
+            {
+                Console.WriteLine("Nincs ilyen alkalmazott.");
+            }
+        }
         
     }
 }
