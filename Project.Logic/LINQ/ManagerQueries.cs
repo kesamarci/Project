@@ -318,6 +318,13 @@ namespace Project.Logic.LINQ
                 .ToList();
             Console.WriteLine($"Doktori címmel rendelkező vezetői alá tartozó alkalmazottak száma: {employees.Count}");
         }
+        private void QueryAboveBelowAverageSalaryEmployees()
+        {
+            var average = _employeeService.GetAllEmployees().Average(e => e.Salary);
+            var above = _employeeService.GetAllEmployees().Count(e => e.Salary > average);
+            var below = _employeeService.GetAllEmployees().Count(e => e.Salary < average);
+            Console.WriteLine($"Átlagfizetés felett: {above}, alatt: {below}");
+        }
 
     }
 }
