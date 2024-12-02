@@ -325,6 +325,18 @@ namespace Project.Logic.LINQ
             var below = _employeeService.GetAllEmployees().Count(e => e.Salary < average);
             Console.WriteLine($"Átlagfizetés felett: {above}, alatt: {below}");
         }
+        private void QueryAverageSalaryByLevel()
+        {
+            var levels = _employeeService.GetAllEmployees()
+                .GroupBy(e => e.Level)
+                .Select(g => new
+                {
+                    Level = g.Key,
+                    Average = g.Average(e => e.Salary)
+                })
+                .ToList();
+            levels.ForEach(l => Console.WriteLine($"{l.Level}: {l.Average:C0}"));
+        }
 
     }
 }
