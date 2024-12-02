@@ -506,7 +506,20 @@ namespace Project.Logic.LINQ
             Console.ReadKey();
         }
         //2
-        
+        private void QueryManagersAlsoHeads()
+        {
+            var manager = _managerService.GetAllManagers()
+                .FirstOrDefault(m => _departmentService.GetAllDepartments().Any(d => d.HeadOfDepartment == m.Name));
+            if (manager != null)
+            {
+                Console.WriteLine($"Van olyan vezető, aki egyben részlegvezető is: {manager.Name}");
+            }
+            else
+            {
+                Console.WriteLine("Nincs ilyen vezető.");
+            }
+            Console.ReadKey();
+        }
 
     }
 }
