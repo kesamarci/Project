@@ -296,6 +296,14 @@ namespace Project.Logic.LINQ
                 .Average(e => e.Salary);
             Console.WriteLine($"Nyugdíjasok átlagkeresete: {average:C0}");
         }
+        private void QueryEmployeesByTotalEarningsDescending()
+        {
+            var employees = _employeeService.GetAllEmployees()
+                .OrderByDescending(e => e.Salary+e.Commission)
+                .ToList();
+            Console.WriteLine("Kereset alapján csökkenő sorrend:");
+            employees.ForEach(e => Console.WriteLine($"- {e.Name}"));
+        }
 
     }
 }
