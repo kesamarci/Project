@@ -349,6 +349,18 @@ namespace Project.Logic.LINQ
                 .Max(e => e.Salary);
             Console.WriteLine($"Medior átlagfizetés: {mediorAverage:C0}, legmagasabb junior fizetés: {juniorHighest:C0}");
         }
-
+        //12
+        private void QueryCommissionByCategory()
+        {
+            var commissions = _employeeService.GetAllEmployees()
+                .GroupBy(e => e.Level)
+                .Select(g => new
+                {
+                    Level = g.Key,
+                    TotalCommission = g.Sum(e => e.Commission)
+                })
+                .ToList();
+            commissions.ForEach(c => Console.WriteLine($"{c.Level}: {c.TotalCommission:C0}"));
+        }
     }
 }
