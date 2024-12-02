@@ -191,7 +191,12 @@ namespace Project.Logic.LINQ
                 case "2":
                     QueryManagersAlsoHeads();
                     break;
+                case "3":
+                    QueryExclusiveHeadsOrManagers();
+                    break;
                 default:
+                    Console.WriteLine("Érvénytelen választás.");
+                    ShowMixedQueries();
                     break;
             }
         }
@@ -332,7 +337,7 @@ namespace Project.Logic.LINQ
         private void QueryEmployeesByTotalEarningsDescending()
         {
             var employees = _employeeService.GetAllEmployees()
-                .OrderByDescending(e => e.Salary+e.Commission)
+                .OrderByDescending(e => e.Salary + e.Commission)
                 .ToList();
             Console.WriteLine("Kereset alapján csökkenő sorrend:");
             employees.ForEach(e => Console.WriteLine($"- {e.Name}"));
@@ -520,6 +525,27 @@ namespace Project.Logic.LINQ
             }
             Console.ReadKey();
         }
+        //3
+        private void QueryExclusiveHeadsOrManagers()
+        {
+            var employees = _employeeService.GetAllEmployees()
+                .Where(e => e.Departments.Count == 0)
+                .Select(e => e.Name)
+                .Concat(_managerService.GetAllManagers()
+                    .Where(m => !_departmentService.GetAllDepartments().Any(d => d.HeadOfDepartment == m.Name))
+                    .Select(m => m.Name))
+                .ToList();
+            if (employees.Any())
+            {
+                Console.WriteLine("Csak részlegvezetők vagy csak vezetők:");
+                employees.ForEach(Console.WriteLine);
+            }
+            else
+            {
+                Console.WriteLine("Nincs ilyen alkalmazott vagy vezető.");
+            }
+            Console.ReadKey();
 
+        }
     }
 }
