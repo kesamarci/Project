@@ -362,5 +362,29 @@ namespace Project.Logic.LINQ
                 .ToList();
             commissions.ForEach(c => Console.WriteLine($"{c.Level}: {c.TotalCommission:C0}"));
         }
+        //13 
+        private void QueryFewestProjectsEmployee()
+        {
+            var employees = _employeeService.GetAllEmployees()
+        .Where(e => e.StartYear > 0) // Csak azok az alkalmazottak, akik dolgoztak a cégnél
+        .Select(e => new
+        {
+            Employee = e.Name,
+            ProjectsPerYear = (double)e.CompletedProjects / (DateTime.Now.Year - e.StartYear)
+        })
+        .OrderBy(x => x.ProjectsPerYear)
+        .FirstOrDefault();
+
+            if (employees != null)
+            {
+                Console.WriteLine($"Az alkalmazott, aki az itt töltött éveihez képest a legkevesebb projekten dolgozott: {employees.Employee}, " +
+                                  $"projektek/év arány: {employees.ProjectsPerYear:F2}");
+            }
+            else
+            {
+                Console.WriteLine("Nincs adat megfelelő alkalmazottról.");
+            }
+        }
+
     }
 }
