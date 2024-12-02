@@ -260,5 +260,13 @@ namespace Project.Logic.LINQ
                 .Count(e => e.BirthYear >= 1980 && e.BirthYear < 1990);
             Console.WriteLine($"80-as években született alkalmazottak száma: {count}");
         }
+        private void QueryEmployeesInMultipleDepartments()
+        {
+            var employees = _employeeService.GetAllEmployees()
+                .Where(e => e.Departments.Count > 1)
+                .ToList();
+            Console.WriteLine($"Két vagy több részlegen dolgozó alkalmazottak száma: {employees.Count}");
+        }
+        
     }
 }
