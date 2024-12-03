@@ -253,8 +253,8 @@ namespace Project.Logic.LINQ
 
             if (manager != null)
             {
-                Console.WriteLine($"A legtöbbet dolgozó vezető az élt éveihez képest: {manager.Manager.Name} " +
-                                  $"({manager.WorkLifeRatio:P2})");
+                Console.WriteLine($"A legtöbbet dolgozó vezető az élt éveihez képest: {manager.Manager.Name} ");
+                                  
             }
             else
             {
