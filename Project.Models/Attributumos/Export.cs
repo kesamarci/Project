@@ -25,8 +25,9 @@ namespace Project.Models.Attributumos
                 }
 
                 IEnumerable<Type> objectTypes = types.Where(x => x.GetCustomAttribute<ToExportAttribute>() != null);
+                IEnumerable<Type> objectTypesHide = types.Where(x => x.GetCustomAttribute<HideFromExportAttribute>() != null);
 
-                DateTime fileCreationDate = DateTime.Now;
+            DateTime fileCreationDate = DateTime.Now;
 
                 XDocument xdoc = new XDocument();
                 xdoc.Add(new XElement("entities",
@@ -44,12 +45,13 @@ namespace Project.Models.Attributumos
                     instance?.GetType().GetProperties().ToList().ForEach(x => properties.Add(x));
                     instance?.GetType()
                             .GetMethods()
-                            .Where(x => x.GetCustomAttribute<ToExportAttribute>() != null)
+                            .Where(x => x.GetCustomAttribute<ToExportAttribute>() != null&& x.GetCustomAttribute<HideFromExportAttribute>()!=null)//HideFromExportAttribute hozzáadása kétséges
                             .ToList()
                             .ForEach(x => methods.Add(x));
                     XElement entityNode = WriteToXML(item, properties, methods);
                     xdoc.Root!.Add(entityNode);
                 }
+
 
                 xdoc.Save("ExPoRtÁlTaM.xml");
             }
